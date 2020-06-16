@@ -1,0 +1,52 @@
+h3 a {
+    color: #FCA209;
+}
+h1 a {
+    color: #FCA209;
+    padding-left: 470px;
+}
+
+form {
+padding-left: 470px;
+}
+
+body {
+    padding-left: 70px;
+
+
+}
+.title{
+padding-left: 150px;
+padding-right: 250px;
+text-align:  justify;
+
+}
+.text {
+padding-right: 250px;
+padding-left: 150px;
+text-align:  justify
+
+}
+h5 a{
+padding-left: 150px;
+
+}
+h4 a {
+line-height: 40px;
+
+}
+.listt{
+padding-left: 250px;
+}
+
+.ncrawl {
+
+font-weight: 900;
+}
+.element{
+background-color:white
+}
+
+.pagination{
+padding-left: 200px;
+}

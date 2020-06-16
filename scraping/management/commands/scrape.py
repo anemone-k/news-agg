@@ -2,13 +2,16 @@ from django.core.management.base import BaseCommand
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from scraping.models import News
-
+from scraping.models import News, Word, Wordlocation
+from scraping.gistfile1 import Porter
+from scraping.transformation import Transformation
+import nltk
 import re
 
 import requests
 
-
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 import datetime
 
 
@@ -62,7 +65,9 @@ class Command(BaseCommand):
 
     # определяем логику команд
     def handle(self, *args, **options):
-
+        stop_words = set(stopwords.words('russian'))
+        stop_words.add("в")
+        stop_words.add("В")
 
         # собираем html
         # РИА новости
@@ -104,6 +109,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -135,7 +183,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -165,6 +255,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         # посты про корону
@@ -194,7 +327,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -243,7 +418,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         # интерфакс лента
@@ -290,7 +507,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -345,7 +604,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         # регнум федеральные
@@ -390,7 +691,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -444,6 +787,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -487,7 +873,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -539,7 +967,49 @@ class Command(BaseCommand):
                         source=source,
                         created_date=date)
                     print('%s added' % (title,))
-
+                    data = title + " " + data
+                    data = Transformation.del_punctuation(data)
+                    words = data.split()
+                    words2 = []
+                    for word in words:
+                        if word in stop_words:
+                            continue
+                        words2.append(Porter.stem(word))
+                    counted = set()
+                    for i in range(len(words2)):
+                        position = []
+                        position_string = ''
+                        if words2[i] in counted:
+                            continue
+                        position.append(i)
+                        position_string += str(i)
+                        counted.add(words2[i])
+                        for j in range(i + 1, len(words2)):
+                            if words2[i] == words2[j]:
+                                position.append(j)
+                                position_string += ','
+                                position_string += str(j)
+                        try:
+                            b = Word.objects.create(word=words2[i])
+                            Wordlocation.objects.create(
+                                word=words2[i],
+                                word1=b,
+                                new=a,
+                                location=position_string,
+                                tf=(len(position)) / (len(words2)),
+                                d=len(words2),
+                                url=url)
+                        except:
+                            # print('%s already exists' % (word,))
+                            b = Word.objects.get(word=words2[i])
+                            Wordlocation.objects.create(
+                                word=words2[i],
+                                word1=b,
+                                new=a,
+                                location=position_string,
+                                tf=(len(position)) / (len(words2)),
+                                d=len(words2),
+                                url=url)
                 except:
                     print('%s already exists' % (title,))
         # RT самые читаемые
@@ -587,7 +1057,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         # новости в мире
@@ -636,7 +1148,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -686,7 +1240,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -733,7 +1329,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         # новости в мире
@@ -782,7 +1420,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -830,6 +1510,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 
@@ -879,7 +1602,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         flex = soup.find("div", class_="rows__column rows__column_three-three-three-one rows__column_main_science")
@@ -927,7 +1692,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
         flex = soup.find("div", class_="rows__column rows__column_three-three-three-one rows__column_main")
@@ -975,7 +1782,49 @@ class Command(BaseCommand):
                     source=source,
                     created_date=date)
                 print('%s added' % (title,))
-
+                data = title + " " + data
+                data = Transformation.del_punctuation(data)
+                words = data.split()
+                words2 = []
+                for word in words:
+                    if word in stop_words:
+                        continue
+                    words2.append(Porter.stem(word))
+                counted = set()
+                for i in range(len(words2)):
+                    position = []
+                    position_string = ''
+                    if words2[i] in counted:
+                        continue
+                    position.append(i)
+                    position_string += str(i)
+                    counted.add(words2[i])
+                    for j in range(i + 1, len(words2)):
+                        if words2[i] == words2[j]:
+                            position.append(j)
+                            position_string += ','
+                            position_string += str(j)
+                    try:
+                        b = Word.objects.create(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
+                    except:
+                        # print('%s already exists' % (word,))
+                        b = Word.objects.get(word=words2[i])
+                        Wordlocation.objects.create(
+                            word=words2[i],
+                            word1=b,
+                            new=a,
+                            location=position_string,
+                            tf=(len(position)) / (len(words2)),
+                            d=len(words2),
+                            url=url)
             except:
                 print('%s already exists' % (title,))
 

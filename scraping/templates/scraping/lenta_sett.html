@@ -1,0 +1,11 @@
+{% extends "./base_generic.html" %}
+{% block content %}
+
+    <h2 align="justify">Мои источники</h2>
+<div align="justify">
+ <form  method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "./base_generic.html" %}
+{% block content %}
+
+    <h2 align="center">Моя лента</h2>
+<div class="listt">
+{% if page_obj %}
+
+    <ul>
+    {% for new in page_obj %}
+       <h4 align="justify" ><li><a href="/scraping/{{ new.id }}/">{{new.source}}:  {{ new.title }}  </a></li></h4> <p>{{new.created_date}}</p>
+    {% endfor %}
+    </ul>
+    <div class="pagination" align="center">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+        <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+    </span>
+    </br>
+</div>
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
+</div>
+    </div>
+
+{% endblock %}

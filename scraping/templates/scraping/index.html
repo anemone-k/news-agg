@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ncrawl агрегатор</title>
+   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/face.css' %}">
+</head>
+<body>
+<div class="element">
+<div class="ncrawl"><h1><a href="/scraping/">Ncrawl агрегатор</a></h1></div>
+
+<form action="{% url 'scraping:search' %}" method="post">
+    {% csrf_token %}
+<input type= "text" name="question" value="" placeholder="Запрос">
+    <input type="submit" value="Поиск">
+</form>
+<h1></h1>
+    <h3 align="center"><a href="/scraping/ria/">РИА новости</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/scraping/interfax/">Интерфакс</a></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/scraping/regnum/">REGNUM</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <a href="/scraping/rt/">RT</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   </h3>
+    {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+    <li><a href="{% url 'scraping:lenta_sett'%}">Настройки моей ленты</a></li>
+    <li><a href="{% url 'scraping:lenta'%}">Моя лента</a></li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Выйти</a></li>
+   {% else %}
+     <li><a href="{% url 'login'%}?next={{request.path}}">Войти</a></li>
+    <li><a href="{% url 'scraping:reg'%}">Регистрация</a></li>
+
+   {% endif %}
+<div class="listt">
+{% if page_obj %}
+
+    <ul>
+    {% for new in page_obj %}
+       <h4 align="justify" ><li><a href="/scraping/{{ new.id }}/">{{new.source}}:  {{ new.title }}  </a></li></h4> <p>{{new.created_date}}</p>
+    {% endfor %}
+    </ul>
+    <div class="pagination" align="center">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+        <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+    </span>
+    </br>
+</div>
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
+</div>
+    </div>
+
+</body>
+</html>

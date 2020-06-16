@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ncrawl агрегатор</title>
+   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/face.css' %}">
+</head>
+<body>
+<div class="element">
+<div class="ncrawl"><h1><a href="/scraping/">Ncrawl агрегатор</a></h1></div>
+
+<form action="{% url 'scraping:search' %}" method="post">
+    {% csrf_token %}
+<input type= "text" name="question" value="" placeholder="Запрос">
+    <input type="submit" value="Поиск">
+</form>
+<h1></h1>
+   {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Выйти</a></li>
+   {% else %}
+     <li><a href="{% url 'login'%}?next={{request.path}}">Войти</a></li>
+    <li><a href="{% url 'scraping:reg'%}">Регистрация</a></li>
+   {% endif %}
+<div class="listt">
+{% if news_list %}
+    <ul>
+    {% for new in news_list %}
+       <h4 ><li><a href="/scraping/{{ new.id }}/">{{new.source}}:  {{ new.title }}  </a></li></h4> <p>{{new.created_date}}</p>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
+</div>
+    </div>
+</body>
+</html>
