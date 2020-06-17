@@ -125,3 +125,6 @@ LOGIN_REDIRECT_URL = '/scraping/'
 LOGIN_URL = '/accounts/login/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+import django_heroku
+django_heroku.settings(locals())
