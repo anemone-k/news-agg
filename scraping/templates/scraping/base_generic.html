@@ -17,7 +17,14 @@
 <input type= "text" name="question" value="" placeholder="Запрос">
     <input type="submit" value="Поиск">
 </form>
-    {% if user.is_authenticated %}
+
+<h1></h1>
+    <h3 align="center"><a href="/scraping/ria/">РИА новости</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/scraping/interfax/">Интерфакс</a></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/scraping/regnum/">REGNUM</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <a href="/scraping/rt/">RT</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   </h3>
+        {% if user.is_authenticated %}
      <li>User: {{ user.get_username }}</li>
     <li><a href="{% url 'scraping:lenta_sett'%}">Настройки моей ленты</a></li>
     <li><a href="{% url 'scraping:lenta'%}">Моя лента</a></li>
@@ -26,12 +33,6 @@
      <li><a href="{% url 'login'%}?next={{request.path}}">Войти</a></li>
     <li><a href="{% url 'scraping:reg'%}">Регистрация</a></li>
    {% endif %}
-<h1></h1>
-    <h3 align="center"><a href="/scraping/ria/">РИА новости</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/scraping/interfax/">Интерфакс</a></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/scraping/regnum/">REGNUM</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <a href="/scraping/rt/">RT</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   </h3>
  {% block content %}{% endblock %}
  </body>
 </html>
