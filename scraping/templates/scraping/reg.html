@@ -1,10 +1,28 @@
 {% extends "./base_generic.html" %}
 {% block content %}
+<div class="detail1" align="center">
+   <ul class="list-group">
+        <li class="list-group-item"> <h2>Регистрация</h2></li>
+    </ul>
+     <ul class="list-group">
 
-    <h2>Регистрация</h2>
+
 
     <form method="POST">{% csrf_token %}
+           <div align="left" >
+           <li class="list-group-item" >
+                  <div style="padding-left:320px">
         {{ form.as_p }}
-        <button type="submit">Save</button>
+                  </div>
+           </li>
+           </div>
+           <li class="list-group-item" >
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+           </li>
     </form>
+   </li>
+   </div>
+
+    </ul>
+</div>
 {% endblock %}

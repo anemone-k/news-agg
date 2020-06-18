@@ -1,11 +1,18 @@
 {% extends "./base_generic.html" %}
 {% block content %}
+<div class="detail1" align="center">
+    <ul class="list-group">
+        <li class="list-group-item"><h2 align="center">Мои источники</h2></li>
+            </ul>
 
-    <h2 align="justify">Мои источники</h2>
-<div align="justify">
- <form  method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить</button>
-    </form>
+        <ul class="list-group">
+        <form method="POST">{% csrf_token %}
+
+        <li class="list-group-item" > {{ form.as_p }}</li>
+         <li class="list-group-item" >   <button type="submit" class="btn btn-primary">Сохранить</button></li>
+
+
+        </form>
+        </ul>
     </div>
 {% endblock %}

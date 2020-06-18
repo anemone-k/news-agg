@@ -773,6 +773,8 @@ class Command(BaseCommand):
                                 data = data + p.text
 
                 date = soup2.find('time', class_="date")['datetime']
+                if date==None:
+                    continue
                 date = str(date)
                 date = date_rt(date)
 
@@ -952,7 +954,10 @@ class Command(BaseCommand):
                                     data = data + ' '
                                     data = data + p.text
 
-                    date = soup2.find('time', class_="date")['datetime']
+                    try:
+                        date = soup2.find('time', class_="date")['datetime']
+                    except:
+                        continue
                     date = str(date)
                     date = date_rt(date)
 

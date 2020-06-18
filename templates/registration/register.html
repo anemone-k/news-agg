@@ -1,10 +1,18 @@
 {% extends "./base_generic.html" %}
 
 {% block content %}
-    <h2>Регистрация</h2>
+   <ul class="list-group">
+        <li class="list-group-item"> <h2>Регистрация</h2></li>
+    </ul>
+    <ul class="list-group">
+   <div align="center">
+   <li class="list-group-item" >
 
     <form method="POST">{% csrf_token %}
         {{ f.as_p }}
         <button type="submit">Save</button>
     </form>
+   </li>
+   </div>
+    </ul>
 {% endblock %}

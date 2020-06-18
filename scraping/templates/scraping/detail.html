@@ -1,52 +1,16 @@
-{% load static %}
-<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>{{new.title}}</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="{% static 'css/face.css' %}">
-     <style>
-
-   h4 {
-    line-height: 2;
-    word-spacing: 0.5;
-    letter-spacing: 0.05em
-   }
-  </style>
-</head>
-<body>
-<h1><a href="/scraping/">Ncrawl агрегатор</a></h1>
-
-
-<form action="{% url 'scraping:search' %}" method="post">
-    {% csrf_token %}
-<input type= "text" name="question" value="" placeholder="Запрос">
-    <input type="submit" value="Поиск">
-</form>
-<h3 align="center"><a href="/scraping/ria/">РИА новости</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/scraping/interfax/">Интерфакс</a></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/scraping/regnum/">REGNUM</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <a href="/scraping/rt/">RT</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   </h3>
-{% if user.is_authenticated %}
-     <li>User: {{ user.get_username }}</li>
-     <li><a href="{% url 'logout'%}?next={{request.path}}">Выйти</a></li>
-   {% else %}
-     <li><a href="{% url 'login'%}?next={{request.path}}">Войти</a></li>
-    <li><a href="{% url 'scraping:reg'%}">Регистрация</a></li>
-   {% endif %}
+{% extends "./base_generic.html" %}
+{% block content %}
 </br>
-<div class="title"><h2 >{{new.title}}</h2></div>
+<div class="detail">
+<ul class="list-group">
+    <li class="list-group-item"><h4>{{new.title}}</h4></li>
+  <li class="list-group-item">{{ new.data }}</li>
+
+    <a href="{{new.url}}"  class="list-group-item list-group-item-action">Источник: {{new.source}} </a>
+
+</ul>
+</br>
 
 </br>
-<div class="text">
-<h4>{{ new.data }}</h4>
-    </div>
-</br>
-<h5><a href="{{new.url}}">Источник: {{new.source}}</a></h5>
-</br>
-</body>
-</html>
+</div>
+{% endblock %}

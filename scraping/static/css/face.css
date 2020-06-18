@@ -6,12 +6,12 @@ h1 a {
     padding-left: 470px;
 }
 
-form {
-padding-left: 470px;
-}
 
-body {
-    padding-left: 70px;
+
+body{
+
+
+	 background: linear-gradient(45deg, rgba(233, 30,99, 0.5), rgba(255, 152, 0, 0.5));
 
 
 }
@@ -27,6 +27,28 @@ padding-left: 150px;
 text-align:  justify
 
 }
+
+.detail {
+height: 800px;
+padding-right: 250px;
+padding-left: 250px;
+text-align:  justify
+
+}
+.detail1 {
+height: 800px;
+padding-right: 250px;
+padding-left: 250px;
+text-align:  center
+
+}
+.detail2 {
+
+padding-right: 250px;
+
+align:  justify
+
+}
 h5 a{
 padding-left: 150px;
 
@@ -37,6 +59,8 @@ line-height: 40px;
 }
 .listt{
 padding-left: 250px;
+padding-right: 250px;
+
 }
 
 .ncrawl {
@@ -50,3 +74,4 @@ background-color:white
 .pagination{
 padding-left: 200px;
 }
+

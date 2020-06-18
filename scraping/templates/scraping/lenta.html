@@ -1,15 +1,19 @@
 {% extends "./base_generic.html" %}
 {% block content %}
 
-    <h2 align="center">Моя лента</h2>
-<div class="listt">
-{% if page_obj %}
 
-    <ul>
-    {% for new in page_obj %}
-       <h4 align="justify" ><li><a href="/scraping/{{ new.id }}/">{{new.source}}:  {{ new.title }}  </a></li></h4> <p>{{new.created_date}}</p>
+<div class="listt">
+    <div class="list-group">
+        <li class="list-group-item"><h2 align="center">Моя лента</h2></li>
+    </div>
+{% if page_obj %}
+    <div class="list-group">
+     {% for new in page_obj %}
+        <a href="/scraping/{{ new.id }}/"  class="list-group-item list-group-item-action">{{new.source}}:  {{ new.title }}  <p>{{new.created_date}}</p> </a>
     {% endfor %}
-    </ul>
+    </div>
+ <div class="list-group">
+        <li class="list-group-item">
     <div class="pagination" align="center">
     <span class="step-links">
         {% if page_obj.has_previous %}
@@ -25,12 +29,17 @@
             <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
             <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
         {% endif %}
-        <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+
     </span>
     </br>
 </div>
+               </li>
+          <br>
+    </div>
 {% else %}
-    <p>No news are available.</p>
+<div class="list-group">
+        <li class="list-group-item"><h2>Нет новостей</h2></li>
+    </div>
 {% endif %}
 </div>
     </div>

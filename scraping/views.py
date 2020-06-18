@@ -26,13 +26,25 @@ k1 = 2
 b = 0.75
 avg = 500  # средняя длина документа
 
+from rest_framework import viewsets
+
+from .serializers import NewsSerializer
+#from .models import Hero
+
+
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = News.objects.all().order_by('title')
+    serializer_class = NewsSerializer
+
+
 def reg(request):
     if request.method == 'POST':
         form = UserCForm(request.POST)
         if form.is_valid():
             new_user = form.save(commit=False)
-            new_user.save()
-            a = My_lenta.objects.create(lenta_owner=new_user, ria=True, interfax=False,regnum=False,rt=False)
+            nuser = User.objects.create_user(new_user.username, new_user.email,new_user.password)
+
+            a = My_lenta.objects.create(lenta_owner=nuser, ria=True, interfax=False,regnum=False,rt=False)
             return redirect( 'scraping:index')
     else:
         form = UserCForm()
@@ -127,10 +139,12 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
+    zag="Последние новости"
     context = {
 
         'page_obj': page_obj,
-        'num_visits': num_visits
+        'num_visits': num_visits,
+        'zag':zag
     }
     return HttpResponse(template.render(context, request))
 
@@ -141,9 +155,11 @@ def ria(request):
     paginator = Paginator(news_list, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    zag = "РИА новости"
     context = {
 
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'zag': zag
     }
     return HttpResponse(template.render(context, request))
 
@@ -154,9 +170,11 @@ def interfax(request):
     paginator = Paginator(news_list, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    zag="Интефакс"
     context = {
 
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'zag': zag
     }
     return HttpResponse(template.render(context, request))
 
@@ -167,9 +185,11 @@ def regnum(request):
     paginator = Paginator(news_list, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    zag="REGNUM"
     context = {
 
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'zag': zag
     }
     return HttpResponse(template.render(context, request))
 
@@ -180,9 +200,11 @@ def rt(request):
     paginator = Paginator(news_list, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    zag="RT"
     context = {
 
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'zag': zag
     }
     return HttpResponse(template.render(context, request))
 
@@ -230,8 +252,9 @@ def search(request):
     news_list = []
     for s in score1:
         news_list.append(News.objects.get(url=s))
+
     paginator = Paginator(news_list, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'scraping/search.html', {'a': a, 'page_obj': page_obj,'n':n})
+    return render(request, 'scraping/search.html', {'a': a, 'news_list': news_list,'n':n})
