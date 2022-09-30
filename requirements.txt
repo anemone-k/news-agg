@@ -12,7 +12,7 @@ django-heroku==0.3.1
 future==0.18.2
 gunicorn==20.0.4
 idna==2.9
-joblib==0.15.1
+joblib==1.2.0
 nltk==3.5
 pefile==2019.4.18
 psycopg2==2.8.5
